@@ -1,0 +1,20 @@
+﻿1a. INTERNAL CLUSTER MEASURES:
+Silhouette statistic and the C-Index all compute SELECT distances rather than all distances. The C-Index also accounts for random chance the best, among all metrics, but this metric has high time complexity.
+
+1b. THOSE APPLICABLE TO FUZZY: 
+* Xie-Beni
+* Fukuyama-Sugeno
+* Gath and Geva (1989)--source: http://web.itu.edu.tr/~sgunduz/courses/verimaden/paper/validity_survey.pdf;  the one defined in "Well Separated Clusters And Optimal Fuzzy Partitions". Xie-Beni Index and PBM Index are fuzzy selective distance metrics extending those above.
+
+2. EXTERNAL MEASURES by popularity:
+1. normalized mutual-information
+2. F-measure
+3. Purity
+4. Entropy
+
+NOTES ON THESE EXTERNAL MEASURES:
+* normalized mutual-information, Purity, and Entropy are reasonably correlated, while F-measure is poorly correlated with the other three measures
+* Purity and the related Herfindahl index and precision/recall curve require equal number of clusters between ground truth and modeled (these all ignore correct determination of true number of classes)
+
+WEBPAGE CORPUSES FOR EXTERNAL VALIDATION: 
+* create at least 3 manually grouped bookmark datasets to externally validate cluster algorithm

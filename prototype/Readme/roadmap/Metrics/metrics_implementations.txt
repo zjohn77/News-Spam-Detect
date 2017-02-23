@@ -1,0 +1,15 @@
+ALL DISTANCES:
+aBCS/aWCS (or WWCS2 in place of aWCS):
+N-Cut (spectral version of above):
+Gamma Index improves on above by limiting the influence a few distances/objects can have
+calinski:
+
+MODEL-FITTING MEASURES
+aic:
+bic:
+
+SELECTIVE DISTANCES:
+silhouette: sklearn
+dunn index:
+davis-bouldin:
+Hubert-Levin (C-index):
