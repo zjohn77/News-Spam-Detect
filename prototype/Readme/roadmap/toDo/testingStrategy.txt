@@ -1,0 +1,6 @@
+OBJECTIVE: WHAT'S THE BEST INTERNAL METRIC?
+1. Identify several corpuses of snippets. 
+2. Construct 3 different datasets by varying: sample size, heterogeneity, snippet length, and noisiness (preprocess & pca).
+
+3. For each dataset, compute the Elbow by evaluating with 4 different internal metrics to find the best K.
+4. So each dataset will have 4 cluster configurations. Manually rank those 4 configurations, and see which metrics correlate well with my judgment of "better".

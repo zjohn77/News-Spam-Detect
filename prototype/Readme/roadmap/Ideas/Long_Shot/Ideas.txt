@@ -1,0 +1,7 @@
+# IDEA 1 Should I look at the std of silhouettes in a cluster? A very low silhouette in an otherwise high avg silhouette 
+# cluster could be cause for concern.
+# IDEA 2 hand label bkmks into folders, so I can check Gini Impurity.
+# IDEA 3 lsa = TruncatedSVD(n_components=60)
+# X_lsa = lsa.fit_transform(doc_term_matrix)
+# Clusterer = KMeans(n_clusters = best_k)
+# Clusterer.fit(X_lsa)
