@@ -1,5 +1,6 @@
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score, calinski_harabaz_score
+from sklearn.metrics.cluster import adjusted_mutual_info_score
 import matplotlib.pyplot as plt
 
 ##### MODEL
@@ -13,9 +14,7 @@ def __calc_metrics(k_cluster_pairs, X):
     for key, value in k_cluster_pairs.items():   
         silhou[key] = silhouette_score(X, labels=value, metric='cosine')
         calins[key] = calinski_harabaz_score(X, labels=value)   
-    return (silhou, calins)           
-    # return {silhouette: silhou,
-    #         calinski: calins}    
+    return (silhou, calins)              
 
 def __stack_plot(x, y1, y2, ticks, x_label='no. of clusters', y1_label='Silhouette Score', y2_label='Calinski Score'): 
     '''Visualize how each metric varies as a function of K (no. of clusters).'''
@@ -33,7 +32,7 @@ def __stack_plot(x, y1, y2, ticks, x_label='no. of clusters', y1_label='Silhouet
 def sensitiv(X):
     ### 1. Loop over k, calling sklearn's KMeans at each iteration
     ### save the predicted cluster labels as a dict keyed by k.     
-    k_metric_pairs = __calc_metrics(__fit_seq_clusters(X, len(X)), X)
+    k_metric_pairs = __calc_metrics(__fit_seq_clusters(X, X.shape[0]), X)
     __stack_plot(x = list(k_metric_pairs[0].keys()), 
                 y1 = list(k_metric_pairs[0].values()), 
                 y2 = list(k_metric_pairs[1].values()),                 
@@ -41,11 +40,3 @@ def sensitiv(X):
 
     
 
-### 3.  
-# x = list(silhou1.keys())
-# x_label = 'no. of clusters'
-# y1, y2 = list(silhou1.values()), list(calinski1.values())
-# y1_label, y2_label = 'Silhouette Score', 'Calinski Score'
-# ticks = range(2, len(X1))
-# stack_plot(x, x_label, y1='Silhouette Score', y2, y1_label, y2_label, ticks)
-# stack_plot(x, x_label, y1, y2, y1_label, y2_label, ticks)

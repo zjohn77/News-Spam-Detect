@@ -1,27 +1,31 @@
 '''defines the callback function to provide to TfidfVectorizer for custom lemmatization of tokens'''
+from numpy.random import choice
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk import word_tokenize          
 from nltk.stem.porter import PorterStemmer
 from re import sub
 
 def __tokenize(string_snippet):
-	'''Custom tokenizer, combined with capability to Porter stem each generated token.'''
-	tokens = word_tokenize(sub('[^A-Za-z\s]+', ' ', string_snippet.lower()))
-	return [PorterStemmer().stem(token) for token in tokens]
+    tokens = word_tokenize(sub('[^A-Za-z\s]+', ' ', string_snippet.lower()))
+    stems = [PorterStemmer().stem(token) for token in tokens]
+    return stems
 
-def doc_term_matrix(snippets, param_dict, tokenize = __tokenize):
-    '''Compute document-term matrix based on corpus.'''  
-    # Pass to the constructor my custom tokenizer, stopword list, and logTF-dampener:    
-    docTerm_X = TfidfVectorizer(tokenizer = __tokenize,
-                                stop_words = __stopwords, 
-                                strip_accents = 'unicode',
-                                sublinear_tf = param_dict['tf_dampen']).fit_transform(snippets)   
-    # Rotate and then project the data onto eigenspace:
+def doc_term_matrix(snippets, param_dict, tokenize=__tokenize):
+    '''Compute document-term matrix based on corpus.'''    
+    vectorizer = TfidfVectorizer(tokenizer = tokenize,
+                                 stop_words = __stopwords, 
+                                 strip_accents = 'unicode',
+                                 sublinear_tf = param_dict['tf_dampen'])
+    docTerm_X = vectorizer.fit_transform(snippets)
+   
+    ###  Rotate and then project the data onto eigenspace
     if param_dict['dim_redu']: 
         return TruncatedSVD(n_components = docTerm_X.shape[1]/5).fit_transform(docTerm_X)
-    return docTerm_X
+    
+    return {'docTerm_X': docTerm_X,
+            'samp': samp}
 
-# Define stopwords.
+### Define stopwords.
 __stopwords = ['page',
 'a',
 'able',
