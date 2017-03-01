@@ -19,7 +19,7 @@ def doc_term_matrix(snippets, param_dict, tokenize = __tokenize):
     # Rotate and then project the data onto eigenspace:
     if param_dict['dim_redu']: 
         return TruncatedSVD(n_components = docTerm_X.shape[1]/5).fit_transform(docTerm_X)
-    return docTerm_X
+    return docTerm_X.toarray()
 
 # Define stopwords.
 __stopwords = ['page',
