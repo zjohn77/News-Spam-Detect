@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[22]:
 
 from numpy.random import choice
 from pandas import read_csv, DataFrame
@@ -13,7 +13,7 @@ from nlp.termWeighting import doc_term_matrix
 from EstimateK.seqFit import sensitiv
 
 
-# In[2]:
+# In[13]:
 
 class Clusterings(object):
     '''Define a class that encapsulates textual processing tools.'''
@@ -35,7 +35,7 @@ class Clusterings(object):
         return bootstraps
 
 
-# In[3]:
+# In[14]:
 
 if __name__ == "__main__":
     # Pass in settings to instantiate a Clusterings object called vecSpaceMod1:
@@ -47,17 +47,20 @@ if __name__ == "__main__":
     df = vecSpaceMod.get_file() # Load csv file into data frame.
 
 
-# In[4]:
+# In[15]:
 
 # Take 3 bootstrap sub-samples for faster, bagged kmeans fits:
 bstraps = vecSpaceMod.resample(df)
 # Compute the Term Frequency Inverse Document Frequency matrix based on news headlines:    
-design_matrices = [vecSpaceMod.term_weight_matr(bstrap.TITLE) for bstrap in bstraps]
+X = [vecSpaceMod.term_weight_matr(bstrap.TITLE) for bstrap in bstraps]
+    
+        
+#     X1 = vecSpaceMod1.term_weight_matr(samp1.TITLE).toarray()
 
 
-# In[8]:
+# In[24]:
 
-[sensitiv(matrix) for matrix in design_matrices] 
+sensitiv(X[0].toarray())    
 
 
 # In[ ]:
