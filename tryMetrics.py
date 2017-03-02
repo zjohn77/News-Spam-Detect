@@ -7,10 +7,11 @@ from numpy.random import choice
 from pandas import read_csv, DataFrame
 from sklearn.cluster import KMeans
 import os, sys
-# sys.path.insert(0, 'C:/Users/jjung/Documents/GitHub//bkmark_organizer/test_parser_stemmer/prototype/TxtClus/')
-sys.path.insert(0, '/home/jz/proj/News-Spam-Detect/TxtClus')
+sys.path.insert(0, 'C:/Users/jjung/Documents/GitHub/News-Spam-Detect/TxtClus/')
+# sys.path.insert(0, '/home/jz/proj/News-Spam-Detect/TxtClus')
 from nlp.termWeighting import doc_term_matrix
 from EstimateK.seqFit import sensitiv
+from functools import reduce
 
 
 # In[2]:
@@ -44,20 +45,38 @@ if __name__ == "__main__":
                                'common_word_pct': 1,
                                'rare_word_pct': 1,
                                'dim_redu': False})
-    df = vecSpaceMod.get_file() # Load csv file into data frame.
+    news = vecSpaceMod.get_file() # Load csv file into data frame.
 
 
-# In[4]:
+# In[27]:
 
 # Take 3 bootstrap sub-samples for faster, bagged kmeans fits:
-bstraps = vecSpaceMod.resample(df)
+bstraps = vecSpaceMod.resample(news)
 # Compute the Term Frequency Inverse Document Frequency matrix based on news headlines:    
-design_matrices = [vecSpaceMod.term_weight_matr(bstrap.TITLE) for bstrap in bstraps]
+metrics_curves = [sensitiv(vecSpaceMod.term_weight_matr(bstrap.TITLE)) for bstrap in bstraps]
 
 
-# In[8]:
+# In[28]:
 
-[sensitiv(matrix) for matrix in design_matrices] 
+tot_metrics = reduce(lambda df1, df2: df1.add(df2), metrics_curves)
+
+
+# In[29]:
+
+print(tot_metrics)
+#     def add_df(X1, X2):
+#         return sensitiv(X1).add(sensitiv(X2))
+
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
 
 
 # In[ ]:
