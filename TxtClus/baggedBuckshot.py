@@ -11,7 +11,7 @@ class Clusterings(object):
         '''read csv input into a pandas data frame'''
         return read_csv(self.__param_dict['file_loc'], encoding = 'latin1')
 
-    def __term_weight_matr(self, snippetsArr):
+    def term_weight_matr(self, snippetsArr):
         '''compute a document-term matrix based on a collection of text documents'''
         return doc_term_matrix(snippetsArr, self.__param_dict)
     
@@ -26,4 +26,4 @@ class Clusterings(object):
         '''Public controller method that computes bagged kmeans fits across metrics & K.'''
         bstraps = self.__resample(df)
         # Calc the TF-IDF matrix based on headlines; then fits kmeans across different K:    
-        return [sensitiv(self.__term_weight_matr(bstrap.TITLE)) for bstrap in bstraps]      
+        return [sensitiv(self.term_weight_matr(bstrap.TITLE)) for bstrap in bstraps]      
