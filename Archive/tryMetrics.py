@@ -1,41 +1,41 @@
 
 # coding: utf-8
 
-# In[22]:
+# In[1]:
+
+'''A Scalable, Noise-Tolerant Bagging approach to the Buckshot Algorithm.
+Reference to the original buckshot algorithm (https://pdfs.semanticscholar.org/1134/3448f8a817fa391e3a7897a95f975ad2873a.pdf)'''
+
+
+# In[1]:
 
 from numpy.random import choice
 from pandas import read_csv, DataFrame
 from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+from functools import reduce
 import os, sys
-# sys.path.insert(0, 'C:/Users/jjung/Documents/GitHub//bkmark_organizer/test_parser_stemmer/prototype/TxtClus/')
-sys.path.insert(0, '/home/jz/proj/News-Spam-Detect/TxtClus')
-from nlp.termWeighting import doc_term_matrix
-from EstimateK.seqFit import sensitiv
+sys.path.insert(0, 'C:/Users/jjung/Documents/GitHub/News-Spam-Detect/TxtClus/')
+# sys.path.insert(0, '/home/jz/proj/News-Spam-Detect/TxtClus')
+from baggedBuckshot import Clusterings
 
 
-# In[13]:
+# In[2]:
 
-class Clusterings(object):
-    '''Define a class that encapsulates textual processing tools.'''
-    def __init__(self, param_dict):
-        self.__param_dict = param_dict        
+def plot_mult_samples(listOf_df, row_name):     
+    '''For each bootstrap iteration, plot metrics across K''' 
+    for i in range(len(listOf_df)):
+        plt.plot(list(listOf_df[i].columns), list(listOf_df[i].loc[row_name,:]), c="green")  
     
-    def get_file(self):
-        '''read csv input into a pandas data frame'''
-        return read_csv(self.__param_dict['file_loc'], encoding = 'latin1')
-
-    def term_weight_matr(self, snippetsArr):
-        '''compute a document-term matrix based on a collection of text documents'''
-        return doc_term_matrix(snippetsArr, self.__param_dict)
-    
-    def resample(self, df, NUM_BOOTSTRAPS = 3):
-        bootstraps = [None] * NUM_BOOTSTRAPS
-        for bootI in range(NUM_BOOTSTRAPS):  
-            bootstraps[bootI] = df.sample(frac=1/NUM_BOOTSTRAPS, replace=True)
-        return bootstraps
+    # Use the reduce function to do elementwise average for several data frames:
+    avg_metrics = reduce(lambda df1, df2: df1.add(df2), listOf_df).div(len(listOf_df))        
+    plt.plot(list(avg_metrics.columns), list(avg_metrics.loc[row_name,:]), c="red")    
+    plt.ylabel(row_name + ' score')   
+    plt.xlabel('no. of clusters')        
+    plt.show()            
 
 
-# In[14]:
+# In[3]:
 
 if __name__ == "__main__":
     # Pass in settings to instantiate a Clusterings object called vecSpaceMod1:
@@ -44,29 +44,36 @@ if __name__ == "__main__":
                                'common_word_pct': 1,
                                'rare_word_pct': 1,
                                'dim_redu': False})
-    df = vecSpaceMod.get_file() # Load csv file into data frame.
 
 
-# In[15]:
+# In[4]:
 
-# Take 3 bootstrap sub-samples for faster, bagged kmeans fits:
-bstraps = vecSpaceMod.resample(df)
-# Compute the Term Frequency Inverse Document Frequency matrix based on news headlines:    
-X = [vecSpaceMod.term_weight_matr(bstrap.TITLE) for bstrap in bstraps]
-    
-        
-#     X1 = vecSpaceMod1.term_weight_matr(samp1.TITLE).toarray()
+# Repeatedly run kmeans on resamples, compute the silhouette and calinski metrics for each K that I plug in.  
+metrics_byK = vecSpaceMod.buckshot(vecSpaceMod.get_file())        
 
 
-# In[24]:
+# In[5]:
 
-sensitiv(X[0].toarray())    
+plot_mult_samples(metrics_byK, 'silhouette')
+
+
+# In[6]:
+
+plot_mult_samples(metrics_byK, 'calinski')
 
 
 # In[ ]:
 
-df = DataFrame({'predictedCluster': KMeans(17).fit(X1).labels_, 
-                'document': term_weight_obj['samp']}).sort_values(by='predictedCluster')
+df = DataFrame({'predictedCluster': KMeans(18).fit(X1).labels_,
+                        'document': term_weight_obj['samp']}).sort_values(by='predictedCluster')
 
-print(df)
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
 

@@ -7,11 +7,12 @@
 Reference to the original buckshot algorithm (https://pdfs.semanticscholar.org/1134/3448f8a817fa391e3a7897a95f975ad2873a.pdf)'''
 
 
-# In[1]:
+# In[18]:
 
 from numpy.random import choice
 from pandas import read_csv, DataFrame
 from sklearn.cluster import KMeans
+from sklearn.metrics import adjusted_mutual_info_score
 import matplotlib.pyplot as plt
 from functools import reduce
 import os, sys
@@ -48,32 +49,41 @@ if __name__ == "__main__":
 
 # In[4]:
 
-# Repeatedly run kmeans on resamples, compute the silhouette and calinski metrics for each K that I plug in.  
-metrics_byK = vecSpaceMod.buckshot(vecSpaceMod.get_file())        
-
-
-# In[5]:
-
-plot_mult_samples(metrics_byK, 'silhouette')
+news_df = vecSpaceMod.get_file() # Read CSV input to data frame.
 
 
 # In[6]:
 
+# Repeatedly run kmeans on resamples, compute the silhouette and calinski metrics for each K that I plug in.  
+metrics_byK = vecSpaceMod.buckshot(news_df)        
+
+
+# In[7]:
+
+plot_mult_samples(metrics_byK, 'silhouette')
+
+
+# In[8]:
+
 plot_mult_samples(metrics_byK, 'calinski')
 
 
-# In[ ]:
+# In[14]:
 
-df = DataFrame({'predictedCluster': KMeans(18).fit(X1).labels_,
-                        'document': term_weight_obj['samp']}).sort_values(by='predictedCluster')
-
-
-# In[ ]:
+X = vecSpaceMod.term_weight_matr(news_df.TITLE)
+kmeans_fit = KMeans(20).fit(X)
 
 
+# In[15]:
+
+cluster_results = DataFrame({'predictedCluster': kmeans_fit.labels_,
+                'document': news_df.TITLE})
+cluster_results.sort_values(by='predictedCluster', inplace=True)
+print(cluster_results)
 
 
-# In[ ]:
+# In[19]:
 
-
+mutual_info = adjusted_mutual_info_score(labels_true=news_df.STORY, labels_pred=kmeans_fit.labels_) 
+print(mutual_info) # 0.646401801989
 
