@@ -10,7 +10,8 @@
 # In[ ]:
 
 '''A Scalable, Noise-Tolerant Bagging approach to the Buckshot Algorithm.
-Reference to the original buckshot algorithm (https://pdfs.semanticscholar.org/1134/3448f8a817fa391e3a7897a95f975ad2873a.pdf)'''
+Reference to the original buckshot algorithm (https://pdfs.semanticscholar.org/1134/3448f8a817fa391e3a7897a95f975ad2873a.pdf)
+Author: John Jung'''
 
 
 # In[1]:
@@ -56,7 +57,7 @@ tbl
 # The shockingly high time complexity of hierarchical clustering is why the Buckshot algorithm performs hierarchical only on a sample. Let's look at what Buckshot++ is and how it simultaneously tackles scalability and stability issues.  
 
 # #### The Buckshot++ Algorithm  
-# 1. Take B bootstrap samples where each sample is of size 1/F.  
+# 1. Take B bootstrap samples where each sample is of size 1/B.  
 # 2. For each K from 2 to F do:  
 #         2a. Pass parameter K into kmeans computation.  
 #         2b. Compute the metric M.
