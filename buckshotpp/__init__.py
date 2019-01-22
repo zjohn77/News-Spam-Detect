@@ -1,6 +1,20 @@
+from .nlp.termWeighting import doc_term_matrix
+from .EstimateK.seqFit import sensitiv
+from functools import reduce
+import matplotlib.pyplot as plt
 from pandas import read_csv, DataFrame
-from nlp.termWeighting import doc_term_matrix
-from EstimateK.seqFit import sensitiv
+
+def plot_mult_samples(listOf_df, row_name):     
+    '''For each bootstrap iteration, plot metrics across K''' 
+    for i in range(len(listOf_df)):
+        plt.plot(list(listOf_df[i].columns), list(listOf_df[i].loc[row_name,:]), c="green")  
+    
+    # Use the reduce function to do elementwise average for several data frames:
+    avg_metrics = reduce(lambda df1, df2: df1.add(df2), listOf_df).div(len(listOf_df))        
+    plt.plot(list(avg_metrics.columns), list(avg_metrics.loc[row_name,:]), c="red")    
+    plt.ylabel(row_name + ' score')   
+    plt.xlabel('no. of clusters')        
+    plt.show()      
 
 class Clusterings(object):
     '''Define a class that encapsulates textual processing tools.'''
