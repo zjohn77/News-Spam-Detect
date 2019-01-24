@@ -1,3 +1,9 @@
+"""
+Buckshot++ is a new algorithm that finds highly stable clusters efficiently. 
+Improving k-means algorithm, making it: 
+(1) less sensitive to noise and outliers; 
+(2) able to determine the number of clusters in a highly scalable fashion.
+"""
 from .nlp.termWeighting import doc_term_matrix
 from .EstimateK.seqFit import sensitiv
 from functools import reduce
@@ -13,7 +19,8 @@ def plot_mult_samples(listOf_df, row_name):
     avg_metrics = reduce(lambda df1, df2: df1.add(df2), listOf_df).div(len(listOf_df))        
     plt.plot(list(avg_metrics.columns), list(avg_metrics.loc[row_name,:]), c="red")    
     plt.ylabel(row_name + ' score')   
-    plt.xlabel('no. of clusters')        
+    plt.xlabel('no. of clusters')       
+    plt.grid() 
     plt.show()      
 
 class Clusterings(object):
