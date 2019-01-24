@@ -4,6 +4,8 @@
 *.pyc
 *.code-workspace
 *.vscode
+.ipynb_checkpoints/
+*~
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -76,10 +78,6 @@ docs/_build/
 
 # PyBuilder
 target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
 
 # IPython
 profile_default/

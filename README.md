@@ -46,19 +46,7 @@ tbl
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -84,7 +72,7 @@ tbl
 
 
 
-Hierarchical's higher time complexity means that, for large inputs, running k-means multiple times is still faster than running hierarchical just once. The Buckshot algorithm runs hierarchical just once on a small sample in order to initialize cluster centers for k-means. Since $O(N^2 * logN)$ grows really fast, the sample must be really small to make it work computationally. But a key critique of Buckshot is [failure to find the right structure with a small sample](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.7906&rep=rep1&type=pdf).  
+Hierarchical's higher time complexity means that, for large inputs, running k-means multiple times is still faster than running hierarchical just once. The Buckshot algorithm runs hierarchical just once on a small sample in order to initialize cluster centers for k-means. Since O(N^2 * logN) grows really fast, the sample must be really small to make it work computationally. But a key critique of Buckshot is [failure to find the right structure with a small sample](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.7906&rep=rep1&type=pdf).  
 
 Buckshot++'s key innovation lies in the step "Take B [bootstrap samples](http://www.stat.rutgers.edu/home/mxie/rcpapers/bootstrap.pdf) where each sample is of size 1/B." While Buckshot is doing hierarchical on a sample, Buckshot++ is doing multiple kmeans on *bootstrap* samples. Doing kmeans many times can still finish sooner than doing hierarchical just once, as the time complexities above show. An added bonus is that bootstrapping is a great way to smooth out noise and improve stability. In fact, that is exactly why **Bagging** (a.k.a. **B**ootstrap **Agg**regat**ing**) and [Random Forests](https://en.wikipedia.org/wiki/Random_forest#From_bagging_to_random_forests) work so well.
 
@@ -165,19 +153,7 @@ cluster_results
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
